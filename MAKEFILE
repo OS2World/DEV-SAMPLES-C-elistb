@@ -1,0 +1,34 @@
+
+OBJS=test.obj
+
+all: test.exe test.res
+
+zip:
+  echo a>test.exe
+  echo a>test.obj
+  echo a>test.res
+  del test.exe
+  del test.obj
+  del test.res
+  zip elistbox	*.*  -xerrs
+
+# so that the dialog editor will work
+test.res: test.rc test.dlg dialog.h
+   rc -r test.rc
+
+test.obj: test.cpp dialog.h elistbox.hpp
+
+
+test.exe:: $(OBJS)
+   link386  @<<
+    $(DEBUG) +
+    /CO /NOL /PM:PM +
+    $(**: =+^
+    )
+    ,,NUL,
+    ;
+<<
+
+test.exe::test.rc dialog.h test.res test.obj
+   rc test.res test.exe
+#    rc test.rc
